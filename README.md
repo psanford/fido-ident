@@ -4,6 +4,8 @@
 
 `fido-ident` is aware of some of the fido and yubikey specific certificate extensions and will attempt to decode the ones it knows about. This can be useful for things like confirming a yubikey is FIPS certified or not.
 
+See [Adam Langley's (agl) blog post on WebAuthn](https://www.imperialviolet.org/2018/03/27/webauthn.html) for more details about attestation certificates.
+
 ## Example
 
 Here's an example running against a yubikey 5 series device.
