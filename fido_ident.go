@@ -21,7 +21,7 @@ import (
 	"github.com/flynn/hid"
 	"github.com/flynn/u2f/u2fhid"
 	"github.com/flynn/u2f/u2ftoken"
-	"github.com/grantae/certinfo"
+	"github.com/psanford/fido-ident/certinfo"
 )
 
 var applicationID = "freakish-printouts"

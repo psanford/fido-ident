@@ -520,7 +520,18 @@ func CertificateText(cert *x509.Certificate) (string, error) {
 					buf.WriteString(fmt.Sprintf("%12sNetscape Comment:\n%16s%s\n", "", "", comment))
 				}
 			} else {
-				buf.WriteString(fmt.Sprintf("%12sUnknown extension %s\n", "", ext.Id.String()))
+				var matched bool
+				for _, knownOid := range knownOids {
+					if ext.Id.Equal(knownOid.OID) {
+						matched = true
+						buf.WriteString(fmt.Sprintf("%12s%s %s\n", "", ext.Id, knownOid.Printer(ext)))
+						break
+					}
+				}
+
+				if !matched {
+					buf.WriteString(fmt.Sprintf("%12sUnknown extension %s\n", "", ext.Id.String()))
+				}
 			}
 		}
 		buf.WriteString("\n")
@@ -539,6 +550,43 @@ func CertificateText(cert *x509.Certificate) (string, error) {
 	*/
 
 	return buf.String(), nil
+}
+
+type OidInfo struct {
+	OID     asn1.ObjectIdentifier
+	Printer func(pkix.Extension) string
+}
+
+func stringPrinter(format string) func(pkix.Extension) string {
+	return func(ext pkix.Extension) string {
+		return fmt.Sprintf(format, ext.Value)
+	}
+}
+
+// see:
+// https://developers.yubico.com/PIV/Introduction/Yubico_Attestation_OID.html
+// https://github.com/Yubico/developers.yubico.com/blob/master/static/U2F/yubico-metadata.json
+var knownOids = []OidInfo{
+	{
+		OID:     asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 41482, 2},
+		Printer: stringPrinter("Yubikey U2FID: %s"),
+	},
+	{
+		OID: asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 41482, 12},
+		Printer: func(pkix.Extension) string {
+			return "Yubikey FIPS"
+		},
+	},
+	{
+		OID: asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 45724, 2, 1, 1},
+		Printer: func(pkix.Extension) string {
+			return "FIDO U2F Authenticator Transports Extension"
+		},
+	},
+	{
+		OID:     asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 45724, 1, 1, 4},
+		Printer: stringPrinter("AAGUID: %x"),
+	},
 }
 
 // CertificateRequestText returns a human-readable string representation
