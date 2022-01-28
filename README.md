@@ -85,4 +85,4 @@ Certificate:
 
 fido-ident is MIT licensed.
 
-The code in certinfo is forked from https://github.com/grantae/certinfo. License and copyright info for that code can be found in (certinfo/LICENSE)[certinfo/LICENSE] (also MIT).
+The code in certinfo is forked from https://github.com/grantae/certinfo. License and copyright info for that code can be found in [certinfo/LICENSE](certinfo/LICENSE) (also MIT).
