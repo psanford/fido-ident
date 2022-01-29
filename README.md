@@ -6,6 +6,8 @@
 
 See [Adam Langley's (agl) blog post on WebAuthn](https://www.imperialviolet.org/2018/03/27/webauthn.html) for more details about attestation certificates.
 
+There's an online version of this tool at https://what-the-fido.sanford.io
+
 ## Example
 
 Here's an example running against a yubikey 5 series device.
