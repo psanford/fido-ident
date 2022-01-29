@@ -57,7 +57,8 @@ Certificate:
         X509v3 extensions:
             1.3.6.1.4.1.41482.2 Yubikey U2FID: 1.3.6.1.4.1.41482.1.7
             1.3.6.1.4.1.45724.2.1.1 FIDO U2F Authenticator Transports Extension
-            1.3.6.1.4.1.45724.1.1.4 AAGUID: 04102fc0579f811347eab116bb5a8db9202a
+            1.3.6.1.4.1.45724.1.1.4 AAGUID: 2fc0579f811347eab116bb5a8db9202a (YubiKey 5 NFC|YubiKey 5C NFC;fw5.2, 5.4)
+
             X509v3 Basic Constraints: critical
                 CA:FALSE
 

@@ -584,9 +584,36 @@ var knownOids = []OidInfo{
 		},
 	},
 	{
-		OID:     asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 45724, 1, 1, 4},
-		Printer: stringPrinter("AAGUID: %x"),
+		OID: asn1.ObjectIdentifier{1, 3, 6, 1, 4, 1, 45724, 1, 1, 4},
+		Printer: func(e pkix.Extension) string {
+			guid := e.Value[2:]
+			guidHex := fmt.Sprintf("%x", guid)
+			yubikeyHW := yubikeyAAGUIDs[guidHex]
+			if yubikeyHW == "" {
+				yubikeyHW = "unknown hw"
+			}
+			return fmt.Sprintf("AAGUID: %s (%s)", guidHex, yubikeyHW)
+		},
 	},
+}
+
+// see:
+// https://support.yubico.com/hc/en-us/articles/360016648959-YubiKey-Hardware-FIDO2-AAGUIDs
+// https://github.com/Yubico/developers.yubico.com/blob/master/static/U2F/yubico-metadata.json
+var yubikeyAAGUIDs = map[string]string{
+	"149a20218ef6413396b881f8d5b7f1f5": "Security Key NFC;fw5.2",
+	"2fc0579f811347eab116bb5a8db9202a": "YubiKey 5 NFC|YubiKey 5C NFC;fw5.2, 5.4",
+	"6d44ba9bf6ec2e49b9300c8fe920cb73": "Security Key NFC;fw5.1",
+	"73bb0cd4e50249b89c6fb59445bf720b": "YubiKey 5(C) (Nano) FIPS;fw5.4",
+	"8520342148f943559bc88a53846e5083": "YubiKey 5Ci FIPS;fw5.4",
+	"b92c3f9ac0144056887f140a2501163b": "Security Key By Yubico;fw5.2",
+	"c1f9a0bc1dd2404ab27f8e29047a43fd": "YubiKey 5(C) NFC FIPS;fw5.4",
+	"c5ef55ffad9a4b9fb580adebafe026d0": "YubiKey 5Ci;fw5.2, 5.4",
+	"cb69481e8ff7403993ec0a2729a154a8": "YubiKey 5(C|USBA) (Nano);fw5.1",
+	"d8522d9f575b486688a9ba99fa02f35b": "YubiKey Bio Series;fw5.5",
+	"ee882879721c491397753dfcce97072a": "YubiKey 5(C|USBA) (Nano);fw5.2, 5.4",
+	"f8a011f38c0a4d15800617111f9edc7d": "Security Key By Yubico;fw5.1",
+	"fa2b99dc9e3942578f924a30d23c4118": "YubiKey 5 NFC;fw5.1",
 }
 
 // CertificateRequestText returns a human-readable string representation
